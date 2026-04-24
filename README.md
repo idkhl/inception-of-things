@@ -43,22 +43,22 @@ Voici les trois piliers de son fonctionnement :
 ### L'Anatomie du Vagrantfile
 Comprendre l'anatomie d'un **Vagrantfile** est essentiel, car bien qu'il s'agisse d'un fichier de configuration, il utilise la syntaxe du langage **Ruby**.
 * **Définition et Nom** : Pour gérer plusieurs machines (comme `S` et `SW`), on utilise des blocs `config.vm.define`. À l'intérieur, on définit le nom d'hôte (`hostname`) qui apparaîtra dans le terminal.
-* **Réseau et IP ** : L'adresse IP fixe demandée (ex: `192.168.56.110`) se configure avec `vm.network`. On utilise généralement le mode "private_network".
-* **Ressources (RAM/CPU) ** : Pour limiter la RAM (512 Mo) et le CPU (1 unit) , on doit entrer dans la configuration du "provider" (le logiciel qui fait tourner la VM, comme VirtualBox).
+* **Réseau et IP** : L'adresse IP fixe demandée (ex: `192.168.56.110`) se configure avec `vm.network`. On utilise généralement le mode "private_network".
+* **Ressources (RAM/CPU)** : Pour limiter la RAM (512 Mo) et le CPU (1 unit) , on doit entrer dans la configuration du "provider" (le logiciel qui fait tourner la VM, comme VirtualBox).
 
 ### Le Cycle de Vie et les Commandes
 * **Le cycle de vie de `vagrant up`** : Lecture du Vagrantfile -> Vérification de la Box -> Création de la VM -> Configuration Réseau -> Provisionnement.
-* **Le fonctionnement de `vagrant ssh` ** : Une fois les machines lancées, cette commande te permet d'y entrer via une authentification par clés (sans mot de passe).
+* **Le fonctionnement de `vagrant ssh`** : Une fois les machines lancées, cette commande te permet d'y entrer via une authentification par clés (sans mot de passe).
 
 ### L'Automatisation (Provisioning) 
 Le **provisionnement** est l'étape où Vagrant installe K3s sans intervention manuelle.
-* **Sur le Server (wilS) ** : Le script installe K3s en mode "serveur" et récupère un **Token** unique (dans `/var/lib/rancher/k3s/server/node-token`).
+* **Sur le Server (wilS)** : Le script installe K3s en mode "serveur" et récupère un **Token** unique (dans `/var/lib/rancher/k3s/server/node-token`).
 * **Sur le Worker (wilSW)** : Le script installe K3s en mode "agent". Il a impérativement besoin de l'adresse IP du serveur (`192.168.56.110`) et du **Token**.
 
 ### L'Adressage IP et les Interfaces 
 * **Réseau Privé** : La plage `192.168.x.x` est réservée aux réseaux locaux (privés).
 * **IP Statique** : `192.168.56.110` pour le serveur et `192.168.56.111` pour le worker.
-* **Noms Predictibles ** : Linux utilise des noms comme `enp0s8` ou `enp0s9` pour les cartes réseau.
+* **Noms Predictibles** : Linux utilise des noms comme `enp0s8` ou `enp0s9` pour les cartes réseau.
 
 ### Manipulation des Commandes 
 Pour vérifier l'état du réseau, on utilise la commande `ip a`.
@@ -75,7 +75,7 @@ config.vm.network "private_network", ip: "192.168.56.110"
 L'adresse IP **192.168.56.110** est le point d'ancrage central.
 * **Le point de contact du Control Plane** : C'est ici que réside l'API Kubernetes.
 * **L'ancrage pour les Workers** : L'agent doit se connecter activement au contrôleur via cette IP.
-* **La porte d'entrée unique (Ingress) ** : C'est cette adresse qui servira de point d'entrée pour tes applications web.
+* **La porte d'entrée unique (Ingress)** : C'est cette adresse qui servira de point d'entrée pour tes applications web.
 
 ### L'Accès SSH 
 Pour se connecter sans mot de passe, on utilise la **cryptographie asymétrique** (Clé Publique et Clé Privée ). Vagrant génère, injecte et configure tout cela automatiquement.
@@ -172,13 +172,13 @@ Le dépôt GitHub devient la **source de vérité**.
 ### La Création de l'Image (CI) 
 Pour envoyer ton app sur Docker Hub :
 1. **Dockerfile** : La recette de construction.
-2. **Docker Build ** : Crée l'image.
-3. **Tagging ** : Identifie les versions (`v1`, `v2`). Évite le tag `latest`.
+2. **Docker Build** : Crée l'image.
+3. **Tagging** : Identifie les versions (`v1`, `v2`). Évite le tag `latest`.
 4. **Docker Push** : Envoie l'image sur Docker Hub.
 
 ### La Magie d'Argo CD (CD) 
 Argo CD "tire" (pull) les informations depuis Git via une boucle de réconciliation.
-* **L'Anatomie du YAML "Application" ** :
+* **L'Anatomie du YAML "Application"** :
     * `source` : Ton dépôt Git (`repoURL`, `targetRevision`, `path`).
     * `destination` : Où déployer (`server`, namespace `dev`).
 * **L'Authentification du Dépôt** : Utilisation de HTTPS (Token) ou SSH (Clé privée) stockés dans des Secrets Kubernetes.
@@ -193,7 +193,7 @@ Tout se joue dans le champ `image` du Deployment YAML (remplacer `:v1` par `:v2`
 * **Les Stratégies de Déploiement** :
     * **Rolling Update ** : Mise à jour progressive, sans coupure.
     * **Recreate** : Coupe tout puis relance (entraîne un temps d'arrêt).
-* **Paramétrer la Transition ** :
+* **Paramétrer la Transition** :
     * `maxSurge` : Surplus autorisé pendant la mise à jour.
     * `maxUnavailable` : Tolérance de Pods hors service.
 * **Les Sondes de Santé (Probes)** : La **Readiness Probe** vérifie si l'app `v2` fonctionne vraiment avant de supprimer l'ancienne `v1`.
