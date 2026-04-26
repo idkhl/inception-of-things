@@ -191,7 +191,7 @@ Tout se joue dans le champ `image` du Deployment YAML (remplacer `:v1` par `:v2`
 
 * **Le Cycle de Vie et la Résilience** : Le Deployment maintient toujours l'état désiré (répare les Pods cassés).
 * **Les Stratégies de Déploiement** :
-    * **Rolling Update ** : Mise à jour progressive, sans coupure.
+    * **Rolling Update** : Mise à jour progressive, sans coupure.
     * **Recreate** : Coupe tout puis relance (entraîne un temps d'arrêt).
 * **Paramétrer la Transition** :
     * `maxSurge` : Surplus autorisé pendant la mise à jour.
