@@ -8,8 +8,9 @@ Vagrant.configure("2") do |config|
     server.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = 1
-    server.vm.provision "shell", path: "scripts/install_server.sh"
     end
+
+    server.vm.provision "shell", path: "scripts/install_server.sh"
   end
 
   config.vm.define "idakhlaoSW" do |agent|
@@ -19,13 +20,17 @@ Vagrant.configure("2") do |config|
     agent.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
       vb.cpus = 1
-    server.vm.provision "shell", path: "scripts/install_worker.sh"
     end
+    server.vm.provision "shell", path: "scripts/install_worker.sh"
+
   end
 
-  
 end
 
 # installer k3s
 # token pour lier server/worker
 # isnatllation kubectl si k3s l'a pas installe
+# tester sur vm:
+# vagrant ssh idakhlaoS
+# kubectl get nodes -o wide
+# doit afficher ready
