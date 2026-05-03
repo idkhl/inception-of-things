@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = 1
     end
     
-    server.vm.provision "shell", path: "scripts/install_server.sh"
+    server.vm.provision "shell", path: "/install_server.sh"
     server.vm.provision "shell", inline: <<-SHELL
       kubectl apply -f /vagrant/deployment.yaml
     SHELL
@@ -18,3 +18,10 @@ Vagrant.configure("2") do |config|
   end
 
 end
+
+
+# si ca marche pas tester
+# echo "Attente du démarrage de l'API Kubernetes..."
+#       sleep 20
+#       sudo k3s kubectl apply -f /vagrant/deployment.yaml
+# curl -H "Host: app1.com" 192.168.56.110

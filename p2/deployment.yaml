@@ -19,7 +19,9 @@ spec:
         - "-text=app1"
         ports:
         - containerPort: 5678
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -54,7 +56,9 @@ spec:
         - "-text=app2"
         ports:
         - containerPort: 5678
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -89,7 +93,9 @@ spec:
         - "-text=app3"
         ports:
         - containerPort: 5678
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
