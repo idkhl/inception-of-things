@@ -114,11 +114,6 @@ kind: Ingress
 metadata:
   name: main-ingress
 spec:
-  defaultBackend:
-    service:
-      name: app3-svc
-      port:
-        number: 80
   rules:
   - host: app1.com
     http:
@@ -140,7 +135,15 @@ spec:
             name: app2-svc
             port:
               number: 80
-
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app3-svc
+            port:
+              number: 80
 
 # faire la meme avec app2 app3
 # voir comment avoir 3 replicas de app2
