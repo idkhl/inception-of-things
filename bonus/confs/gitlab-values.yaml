@@ -1,0 +1,42 @@
+global:
+  hosts:
+    domain: local
+  ingress:
+    configureCertmanager: false
+    provider: traefik
+
+certmanager:
+  install: false
+prometheus:
+  install: false
+gitlab-runner:
+  install: false
+
+gitlab:
+  webservice:
+    minReplicas: 1
+    maxReplicas: 1
+    livenessProbe:
+      initialDelaySeconds: 240
+      timeoutSeconds: 15
+    readinessProbe:
+      initialDelaySeconds: 240
+      timeoutSeconds: 15
+  sidekiq:
+    minReplicas: 1
+    maxReplicas: 1
+  gitaly:
+    persistence:
+      size: 3Gi
+
+postgresql:
+  persistence:
+    size: 1Gi
+
+minio:
+  persistence:
+    size: 1Gi
+
+redis:
+  persistence:
+    size: 512Mi
